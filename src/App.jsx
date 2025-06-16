@@ -1,12 +1,11 @@
-import { useState } from 'react'
+import { useState } from 'react' // Función para manejar estados dentro de los componentes.
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
       <div>
-        <h1>Fred Mateo</h1>
+        <h5>Fred Mateo</h5>
       </div>
     </>
   )
