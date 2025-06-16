@@ -6,6 +6,9 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
+/*Desarrollo*/
+import logo from '../assets/imagenes/Logo.png';
+
 function Navbar001() {
   const expand = 'lg';
 
@@ -14,7 +17,7 @@ function Navbar001() {
       <Container fluid>
         <Navbar.Brand href="#" className="fw-bold">
           <img
-            src="./public/Logo.png"
+            src={logo}
             alt="Logo"
             width="30"
             height="30"
