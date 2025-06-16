@@ -6,6 +6,15 @@ import { createRoot } from 'react-dom/client' //Inicia React en el DOM.
 //import './index.css'//Estilos globales
 import App from './App.jsx' //Componente raiz para renderizar la app
 
+/*Desarrollo Fred Mateo*/
+import 'bootstrap/dist/css/bootstrap.min.css'; //importamos bootstrap 
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';// imprtación para habilitar dropdowns y el menú hamburguesa.
+
+
+
+
+
+
 /*Montar la aplicacion en REACT en el HTML index.html a partir del id=root*/
 createRoot(document.getElementById('root')).render(
   <StrictMode>

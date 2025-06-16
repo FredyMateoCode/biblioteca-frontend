@@ -1,12 +1,15 @@
 import { useState } from 'react' // Función para manejar estados dentro de los componentes.
 
+/*Desarrollo*/
+import Navbar from './componentes/Navbar';//importamos el componente Navbar
+
 function App() {
 
   return (
     <>
-      <div>
-        <h1>Prueba antes de iniciar el desarrollo</h1>
-        <h5>Fred Mateo</h5>
+      <Navbar />
+      <div className="container mt-4">
+        <h1>Componentes en desarrollo</h1>
       </div>
     </>
   )
