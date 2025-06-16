@@ -5,6 +5,7 @@ function App() {
   return (
     <>
       <div>
+        <h1>Prueba antes de iniciar el desarrollo</h1>
         <h5>Fred Mateo</h5>
       </div>
     </>
