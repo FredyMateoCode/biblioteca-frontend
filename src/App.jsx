@@ -2,6 +2,7 @@ import { useState } from 'react' // Función para manejar estados dentro de los 
 
 /*Desarrollo*/
 import Navbar from './componentes/Navbar';//importamos el componente Navbar
+import Carousel001 from './componentes/Carousel001';//importamos el componente Navbar
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
     <>
       <Navbar />
       <div className="container mt-4">
+        <Carousel001/>
         <h1>Componentes en desarrollo</h1>
       </div>
     </>

@@ -67,5 +67,4 @@ function Navbar001() {
   );
 }
 
-
 export default Navbar001;
