@@ -25,6 +25,7 @@ function Navbar001() {
           />
           Divina Pastora
         </Navbar.Brand>
+        <Button variant="dark">Acceder</Button>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${expand}`} />
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-${expand}`}
