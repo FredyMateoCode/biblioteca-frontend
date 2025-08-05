@@ -2,17 +2,15 @@ import { useState } from 'react' // Función para manejar estados dentro de los 
 
 /*Desarrollo*/
 import Card2 from './componentes/Car2';
-
+import Dashboard from './componentes/Dashboard';
 
 function App() {
 
   return (
 
      <>
-      <main>
-        MOSTRANDO PRUEBA DE CARD Y ACTUALIZACIÓN
-        <Card2 />
-      </main>
+     <Dashboard />
+     
     </>
   )
 }
