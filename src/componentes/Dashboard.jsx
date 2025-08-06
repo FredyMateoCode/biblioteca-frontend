@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+
 import {
   Box,
   CssBaseline,
@@ -13,7 +14,12 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
+  Avatar,
+  Menu,
+  MenuItem,
+  Tooltip
 } from '@mui/material';
+
 import {
   Menu as MenuIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -23,47 +29,107 @@ import {
   ExpandLess,
   ExpandMore,
   Description as DescriptionIcon,
+  Notifications as NotificationsIcon,
+  Mail as MailIcon,
+  ArrowDropDown as ArrowDropDownIcon
 } from '@mui/icons-material';
 
 import Card1 from './Card1';
-import Card2 from './Car2';
+import Card2 from './Car2'; // Corregido: antes estaba mal escrito como 'Car2'
+import Redes from './Redes';
+import imagen001 from '../assets/imagenes/Logo.png';
 
-
-// Contenido de ejemplo
-const Inicio = () => <Card1 />;
-
-const Ordenes = () => <Typography variant="h4">Órdenes</Typography>;
+// Páginas internas
+const Inicio = () => <Card2 />;
+const Ordenes = () => <Redes />;
 const ReportesSalas = () => <Typography variant="h4">Reportes: Salas</Typography>;
 const ReportesTrafico = () => <Typography variant="h4">Reportes: Tráfico</Typography>;
 
 export default function Dashboard() {
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(false);
-
-  const toggleDrawer = () => setOpen(!open);
-  const toggleSubmenu = () => setSubmenuOpen(!submenuOpen);
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const drawerWidth = 180;
   const collapsedWidth = 60;
+
+  const openMenu = Boolean(anchorEl);
+  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
+  const handleLogout = () => {
+    handleMenuClose();
+    // Agrega aquí tu lógica de cierre de sesión
+  };
+
+  const toggleDrawer = () => setOpen(!open);
+  const toggleSubmenu = () => setSubmenuOpen(!submenuOpen);
 
   return (
     <Router>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
+
+        {/* AppBar superior */}
         <AppBar
           position="fixed"
-          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+          sx={{
+            zIndex: (theme) => theme.zIndex.drawer + 1,
+            background: 'linear-gradient(to right, #b71c1c, #880e4f)'
+          }}
         >
-          <Toolbar>
-            <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
-              {open ? <ChevronLeftIcon /> : <MenuIcon />}
-            </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              Mi Biblioteca
-            </Typography>
-          </Toolbar>
+          <Toolbar
+  sx={{
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: { xs: 1, sm: '0 16px' },
+  }}
+>
+  {/* Icono del menú y logo (oculto en móvil) */}
+  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
+    <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
+      {open ? <ChevronLeftIcon /> : <MenuIcon />}
+    </IconButton>
+
+    <Box sx={{ display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: 1 }}>
+      <img src={imagen001} alt="Logo" style={{ width: 32, height: 32 }} />
+      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>Mi Biblioteca</Typography>
+    </Box>
+  </Box>
+
+  {/* Iconos y usuario (siempre visibles) */}
+  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+    <IconButton color="inherit"><MailIcon /></IconButton>
+    <IconButton color="inherit"><NotificationsIcon /></IconButton>
+
+    <Tooltip title="Cuenta">
+      <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleMenuOpen}>
+        <Avatar sx={{ width: 32, height: 32, mr: 1 }}>F</Avatar>
+        <Typography
+          variant="body1"
+          sx={{ fontWeight: 'bold', color: 'white', display: { xs: 'none', sm: 'block' } }}
+        >
+          Fred
+        </Typography>
+        <ArrowDropDownIcon sx={{ color: 'white' }} />
+      </Box>
+    </Tooltip>
+
+    <Menu
+      anchorEl={anchorEl}
+      open={openMenu}
+      onClose={handleMenuClose}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+    >
+      <MenuItem onClick={handleLogout}>Cerrar sesión</MenuItem>
+    </Menu>
+  </Box>
+</Toolbar>
+
         </AppBar>
 
+        {/* Drawer lateral */}
         <Drawer
           variant="permanent"
           sx={{
@@ -72,11 +138,10 @@ export default function Dashboard() {
             '& .MuiDrawer-paper': {
               width: open ? drawerWidth : collapsedWidth,
               boxSizing: 'border-box',
-              transition: 'width 0.3s',
-            },
+              transition: 'width 0.3s'
+            }
           }}
         >
-
           <Toolbar />
           <List>
             <ListItem button component={Link} to="/inicio">
@@ -110,17 +175,19 @@ export default function Dashboard() {
           </List>
         </Drawer>
 
+        {/* Main content */}
         <Box
           component="main"
           sx={{
             flexGrow: 1,
             p: 3,
-            marginLeft: open ? `${drawerWidth}px` : `${collapsedWidth}px`,
-            transition: 'margin-left 0.3s',
+            transition: 'margin-left 0.3s'
           }}
         >
           <Toolbar />
+
           <Routes>
+            <Route path="/" element={<Navigate to="/inicio" replace />} />
             <Route path="/inicio" element={<Inicio />} />
             <Route path="/ordenes" element={<Ordenes />} />
             <Route path="/reportes/salas" element={<ReportesSalas />} />
