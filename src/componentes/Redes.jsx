@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 
 
 import Card1 from './Card1';
-import Mp3 from './Mp3';
+import Mp3 from './mp3.jsx';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: '#fff',
