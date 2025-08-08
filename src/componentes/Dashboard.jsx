@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 
+import { GlobalStyles } from '@mui/material';
+import { useLocation } from 'react-router-dom';
+
+
 import {
   Box,
   CssBaseline,
@@ -25,13 +29,22 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
   ShoppingCart as ShoppingCartIcon,
+  Shop as ShopIcon,
+  AutoStories as AutoStoriesIcon,
   BarChart as BarChartIcon,
+  WorkOutline as WorkOutlineIcon,
   ExpandLess,
   ExpandMore,
   Description as DescriptionIcon,
   Notifications as NotificationsIcon,
   Mail as MailIcon,
-  ArrowDropDown as ArrowDropDownIcon
+  ArrowDropDown as ArrowDropDownIcon,
+  School as SchoolIcon,
+  Group as GroupIcon,
+  RealEstateAgent as RealEstateAgentIcon,
+  Checklist as ChecklistIcon,
+  Rule as RuleIcon,
+  BookOnline as BookOnlineIcon
 } from '@mui/icons-material';
 
 import Card1 from './Card1';
@@ -50,7 +63,7 @@ export default function Dashboard() {
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const drawerWidth = 180;
+  const drawerWidth = 200;
   const collapsedWidth = 60;
 
   const openMenu = Boolean(anchorEl);
@@ -66,6 +79,16 @@ export default function Dashboard() {
 
   return (
     <Router>
+      {/* Estilo global para eliminar eestilos de etiquetas a */}
+      <CssBaseline />
+        <GlobalStyles
+          styles={{
+            a: {
+              color: 'inherit',
+              textDecoration: 'none',
+            },
+          }}
+        />
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
 
@@ -149,12 +172,42 @@ export default function Dashboard() {
               {open && <ListItemText primary="Inicio" />}
             </ListItem>
 
-            <ListItem button component={Link} to="/ordenes">
-              <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
-              {open && <ListItemText primary="Órdenes" />}
+            <ListItem button component={Link} to="/inicio">
+              <ListItemIcon><AutoStoriesIcon /></ListItemIcon>
+              {open && <ListItemText primary="Libros" />}
             </ListItem>
 
-            <ListItem button onClick={toggleSubmenu}>
+            <ListItem button component={Link} to="/inicio">
+              <ListItemIcon><WorkOutlineIcon /></ListItemIcon>
+              {open && <ListItemText primary="Maestros" />}
+            </ListItem>
+
+            <ListItem button component={Link} to="/inicio">
+              <ListItemIcon><SchoolIcon /></ListItemIcon>
+              {open && <ListItemText primary="Estudiantes" />}
+            </ListItem>
+
+            <ListItem button component={Link} to="/inicio">
+              <ListItemIcon><GroupIcon /></ListItemIcon>
+              {open && <ListItemText primary="Usuarios" />}
+            </ListItem>
+
+            <ListItem button component={Link} to="/inicio">
+              <ListItemIcon><RealEstateAgentIcon /></ListItemIcon>
+              {open && <ListItemText primary="Préstamos" />}
+            </ListItem>
+
+            <ListItem button component={Link} to="/ordenes">
+              <ListItemIcon><ChecklistIcon /></ListItemIcon>
+              {open && <ListItemText primary="Inventario" />}
+            </ListItem>
+
+            <ListItem button component={Link} to="/ordenes">
+              <ListItemIcon><BookOnlineIcon /></ListItemIcon>
+              {open && <ListItemText primary="Reservas" />}
+            </ListItem>
+
+            <ListItem button onClick={toggleSubmenu} sx={{ cursor: 'pointer' }} button onClick={toggleSubmenu}>
               <ListItemIcon><BarChartIcon /></ListItemIcon>
               {open && <ListItemText primary="Reportes" />}
               {open && (submenuOpen ? <ExpandLess /> : <ExpandMore />)}
@@ -163,12 +216,12 @@ export default function Dashboard() {
             <Collapse in={submenuOpen} timeout="auto" unmountOnExit>
               <List component="div" disablePadding sx={{ pl: open ? 4 : 2 }}>
                 <ListItem button component={Link} to="/reportes/salas">
-                  <ListItemIcon><DescriptionIcon /></ListItemIcon>
-                  {open && <ListItemText primary="Salas" />}
+                  <ListItemIcon><RealEstateAgentIcon /></ListItemIcon>
+                  {open && <ListItemText primary="Préstamos" />}
                 </ListItem>
                 <ListItem button component={Link} to="/reportes/trafico">
-                  <ListItemIcon><DescriptionIcon /></ListItemIcon>
-                  {open && <ListItemText primary="Tráfico" />}
+                  <ListItemIcon><RuleIcon /></ListItemIcon>
+                  {open && <ListItemText primary="Vencidos" />}
                 </ListItem>
               </List>
             </Collapse>
