@@ -31,7 +31,7 @@ const VistaDesarrollador = lazy(() => import('./paginas/Inicio/Vistas/VistaDesar
 const VistaBiblioteca = lazy(() => import('./paginas/Inicio/Vistas/VistaBiblioteca.jsx'));
 
 // Importa el componente que quieres que sea siempre visible
-import PlaygroundSpeedDial from './componentes/Speeds/PlaygroundSpeedDial'; 
+import PlaygroundSpeedDial from './componentes/Speeds/PlaygroundSpeedDial';
 
 // Componente para la página 404 (opcional pero recomendado)
 const NotFound = () => <h1>404: Página no encontrada</h1>;
@@ -90,11 +90,8 @@ export default function App() {
             <Route path="reportes/prestamos" element={<ReportesPrestamos />} />
             <Route path="reportes/vencidos" element={<ReportesVencidos />} />
           </Route>
-          
           {/* Otras rutas de nivel superior */}
           <Route path="/login" element={<Login />} />
-
-          
           {/* Ruta de 'catch-all' para páginas no encontradas. Debe ir al final. */}
           <Route path="*" element={<NotFound />} />
         </Routes>
