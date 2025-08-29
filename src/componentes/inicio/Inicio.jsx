@@ -6,9 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
-
-
-import imagen001 from '../assets/imagenes/imagen001.jpg';
+import Imagen from '../../assets/imagenes/imagen001.jpg'
 
 export default function MultiActionAreaCard() {
   return (
@@ -17,14 +15,15 @@ export default function MultiActionAreaCard() {
         <CardMedia
           component="img"
           height="140"
-          image={imagen001}
+          image={ Imagen }
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Fredy Mateo
+            Inicio
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Represento a todos los componentes que se mostrarán a ingresar al menú inicio del Drawover.
             Lizards are a widespread group of squamate reptiles, with over 6,000
             species, ranging across all continents except Antarctica
           </Typography>

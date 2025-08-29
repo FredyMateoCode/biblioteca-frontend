@@ -15,7 +15,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-import imagen001 from '../assets/imagenes/imagen001.jpg';
+import imagen001 from '../../assets/imagenes/imagen001.jpg';
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -55,7 +55,7 @@ export default function RecipeReviewCard() {
         variant="h5" 
         sx={{ marginBottom: 2, fontWeight: 'bold', textAlign: 'center' }}
       >
-        Vista panorámica del día
+        Inicio
       </Typography>
 
       <Card sx={{ maxWidth: 345 }}>
