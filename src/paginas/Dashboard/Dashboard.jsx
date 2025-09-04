@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import {
   Box, CssBaseline, AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem,
   ListItemIcon, ListItemText, Collapse, Avatar, Menu, MenuItem, Tooltip, Badge
@@ -21,19 +22,52 @@ export default function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate(); // El hook ya está aquí
 
+  //Para mostrar el nombre del usuario en la barra
+  const [nombreUsuario, setNombreUsuario] = useState('');
+  const primeraLetra = nombreUsuario ? nombreUsuario.charAt(0) : '';
+  useEffect(() => {
+  const token = localStorage.getItem('auth-token');
+  
+  if (token) {
+      try {
+        // Decodifica el token para obtener la información.
+        const usuarioDecodificado = jwtDecode(token);
+        // Actualiza el estado con el nombre del usuario.
+        setNombreUsuario(usuarioDecodificado.usuario); // ✅ Revisa tu payload para saber el nombre exacto de la propiedad (ej. 'nombre', 'usuario', etc.). En tu caso era 'usuario'.
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+      }
+    }
+  }, []);
+
   const drawerWidth = 200;
   const collapsedWidth = 60;
 
   const openMenu = Boolean(anchorEl);
   const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
   const handleMenuClose = () => setAnchorEl(null);
-  
+
+  // ✅ Obtén el rol del localStorage
+  const userRol = localStorage.getItem('user-rol');
+
+  // ✅ Agrega este bloque de código
+  useEffect(() => {
+   const handleStorageChange = (e) => {
+    if (e.key === 'auth-token' && !e.newValue) {
+      navigate('/login', { replace: true });
+    }
+   };
+   window.addEventListener('storage', handleStorageChange);
+   return () => {
+    window.removeEventListener('storage', handleStorageChange);
+   };
+  }, [navigate]);
+
   // Modifica la función handleLogout
   const handleLogout = () => {
-    // Aquí es donde pondrías tu lógica para cerrar la sesión
-    // Por ejemplo, limpiar el token de autenticación del estado global o del almacenamiento local
-    // localStorage.removeItem('authToken'); 
-    
+    // ✅ Elimina el token de autenticación del almacenamiento local
+        localStorage.removeItem('auth-token');
+    //Cerrar el menú deplegable
     handleMenuClose();
     // Redirige al usuario a la ruta principal del proyecto
     navigate('/');
@@ -96,10 +130,10 @@ export default function Dashboard() {
               </IconButton>
               <Tooltip title="Cuenta Activa">
                 <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={handleMenuOpen}>
-                  <Avatar sx={{ width: 32, height: 32, mr: 1 }}>M</Avatar>
+                  <Avatar sx={{ width: 32, height: 32, mr: 1 }}>{primeraLetra}</Avatar>
                   <Typography variant="body1" sx={{ fontWeight: 'bold', color: 'white',
                     display: { xs: 'none', sm: 'block' } }}>
-                    Fred Mateo
+                    {nombreUsuario}
                   </Typography>
                   <ArrowDropDownIcon sx={{ color: 'white' }} />
                 </Box>
@@ -138,34 +172,73 @@ export default function Dashboard() {
               <ListItemIcon><DashboardIcon /></ListItemIcon>
               {open && <ListItemText primary="Inicios" sx={{ color: 'black' }}  />}
             </ListItem>
-            <ListItem {...getListItemProps('/libros')}>
-              <ListItemIcon><AutoStoriesIcon /></ListItemIcon>
-              {open && <ListItemText primary="Libros" sx={{ color: 'black' }}  />}
-            </ListItem>
-            <ListItem {...getListItemProps('/maestros')}>
-              <ListItemIcon><WorkOutlineIcon /></ListItemIcon>
-              {open && <ListItemText primary="Maestros" sx={{ color: 'black' }}  />}
-            </ListItem>
-            <ListItem {...getListItemProps('/estudiantes')}>
-              <ListItemIcon><SchoolIcon /></ListItemIcon>
-              {open && <ListItemText primary="Estudiantes" sx={{ color: 'black' }}  />}
-            </ListItem>
-            <ListItem {...getListItemProps('/usuarios')}>
-              <ListItemIcon><GroupIcon /></ListItemIcon>
-              {open && <ListItemText primary="Usuarios" sx={{ color: 'black' }}  />}
-            </ListItem>
-            <ListItem {...getListItemProps('/prestamos')}>
-              <ListItemIcon><RealEstateAgentIcon /></ListItemIcon>
-              {open && <ListItemText primary="Préstamos" sx={{ color: 'black' }}  />}
-            </ListItem>
-            <ListItem {...getListItemProps('/inventario')}>
-              <ListItemIcon><ChecklistIcon /></ListItemIcon>
-              {open && <ListItemText primary="Inventario" sx={{ color: 'black' }}  />}
-            </ListItem>
-            <ListItem {...getListItemProps('/reservas')}>
-              <ListItemIcon><BookOnlineIcon /></ListItemIcon>
-              {open && <ListItemText primary="Reservas" sx={{ color: 'black' }}  />}
-            </ListItem>
+            
+            
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/libros')}>
+                <ListItemIcon><AutoStoriesIcon /></ListItemIcon>
+                {open && <ListItemText primary="Libros" sx={{ color: 'black' }}  />}
+              </ListItem>                           
+            )}
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/maestros')}>
+                <ListItemIcon><WorkOutlineIcon /></ListItemIcon>
+                {open && <ListItemText primary="Maestros" sx={{ color: 'black' }}  />}
+              </ListItem>                           
+            )}
+
+            
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/estudiantes')}>
+                <ListItemIcon><SchoolIcon /></ListItemIcon>
+                {open && <ListItemText primary="Estudiantes" sx={{ color: 'black' }}  />}
+              </ListItem>              
+            )}
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/usuarios')}>
+                <ListItemIcon><GroupIcon /></ListItemIcon>
+                {open && <ListItemText primary="Usuarios" sx={{ color: 'black' }}  />}
+              </ListItem>
+            )}
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/prestamos')}>
+                <ListItemIcon><RealEstateAgentIcon /></ListItemIcon>
+                {open && <ListItemText primary="Préstamos" sx={{ color: 'black' }}  />}
+              </ListItem>
+
+            )}
+
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/inventario')}>
+                <ListItemIcon><ChecklistIcon /></ListItemIcon>
+                {open && <ListItemText primary="Inventario" sx={{ color: 'black' }}  />}
+              </ListItem>
+            )}
+
+            {/* ✅ La protección de la ruta de usuarios */}
+            {userRol !== 'invitado' && (
+              <ListItem {...getListItemProps('/reservas')}>
+                <ListItemIcon><BookOnlineIcon /></ListItemIcon>
+                {open && <ListItemText primary="Reservas" sx={{ color: 'black' }}  />}
+              </ListItem>
+
+            )}
+
+            
+            
+            
             <ListItem
               onClick={toggleSubmenu}
               sx={{

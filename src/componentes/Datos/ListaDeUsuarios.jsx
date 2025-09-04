@@ -1,5 +1,5 @@
 import React from 'react';
-import useUsuarios from './useUsuarios';
+import obtenerUsuarios from '../../servicios/obtenerUsuarios.js';
 import { 
   Table, 
   TableBody, 
@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 
 function ListaDeUsuarios() {
-  const { usuarios, cargando, error } = useUsuarios();
+  const { usuarios, cargando, error } = obtenerUsuarios();
 
   if (cargando) {
     return <div>Cargando datos de usuarios...</div>;
@@ -24,8 +24,8 @@ function ListaDeUsuarios() {
 
   return (
     <TableContainer component={Paper}>
-      <Typography variant="h4" component="h1" sx={{ p: 2 }}>
-        Usuarios Registrados de la Biblioteca
+      <Typography variant="h6" component="h6" sx={{ p: 2 }}>
+        Usuarios Registrados
       </Typography>
       <Table sx={{ minWidth: 650 }} aria-label="tabla de usuarios">
         <TableHead>

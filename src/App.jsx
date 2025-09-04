@@ -3,6 +3,9 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 
+//IMportacion de las protección de rutas
+import RutaPrivada from './componentes/RutaPrivada';
+
 // Componentes del Layout (padres)
 const Publico = lazy(() => import('./paginas/Inicio/Publico'));
 const Login = lazy(() => import('./paginas/Login/Login'));
@@ -33,8 +36,12 @@ const VistaBiblioteca = lazy(() => import('./paginas/Inicio/Vistas/VistaBibliote
 // Importa el componente que quieres que sea siempre visible
 import PlaygroundSpeedDial from './componentes/Speeds/PlaygroundSpeedDial';
 
+
+
+
 // Componente para la página 404 (opcional pero recomendado)
 const NotFound = () => <h1>404: Página no encontrada</h1>;
+
 
 export default function App() {
   return (
@@ -78,18 +85,21 @@ export default function App() {
           </Route>
           
           {/* Rutas de Dashboard, usan el layout de Dashboard.jsx */}
-          <Route path="/dashboard" element={<Dashboard />}>
-            <Route index element={<VistaInicio />} />
-            <Route path="libros" element={<VistaLibros />} />
-            <Route path="maestros" element={<VistaMaestros />} />
-            <Route path="estudiantes" element={<VistaEstudiantes />} />
-            <Route path="usuarios" element={<VistaUsuarios />} />
-            <Route path="prestamos" element={<VistaPrestamos />} />
-            <Route path="inventario" element={<VistaInventario />} /> 
-            <Route path="reservas" element={<VistaReservas />} />
-            <Route path="reportes/prestamos" element={<ReportesPrestamos />} />
-            <Route path="reportes/vencidos" element={<ReportesVencidos />} />
+          <Route element={<RutaPrivada />}>
+            <Route path="/dashboard" element={<Dashboard />}>
+              <Route index element={<VistaInicio />} />
+              <Route path="libros" element={<VistaLibros />} />
+              <Route path="maestros" element={<VistaMaestros />} />
+              <Route path="estudiantes" element={<VistaEstudiantes />} />
+              <Route path="usuarios" element={<VistaUsuarios />} />
+              <Route path="prestamos" element={<VistaPrestamos />} />
+              <Route path="inventario" element={<VistaInventario />} /> 
+              <Route path="reservas" element={<VistaReservas />} />
+              <Route path="reportes/prestamos" element={<ReportesPrestamos />} />
+              <Route path="reportes/vencidos" element={<ReportesVencidos />} />
+            </Route>
           </Route>
+
           {/* Otras rutas de nivel superior */}
           <Route path="/login" element={<Login />} />
           {/* Ruta de 'catch-all' para páginas no encontradas. Debe ir al final. */}
