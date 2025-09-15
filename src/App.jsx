@@ -3,7 +3,7 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Box, CircularProgress } from '@mui/material';
 
-//IMportacion de las protección de rutas
+//Importacion de las protección de rutas
 import RutaPrivada from './componentes/RutaPrivada';
 
 // Componentes del Layout (padres)
@@ -85,6 +85,7 @@ export default function App() {
           </Route>
           
           {/* Rutas de Dashboard, usan el layout de Dashboard.jsx */}
+          {/* Rutas envueltas en rutas Privadas para evidat acceso sin login */}
           <Route element={<RutaPrivada />}>
             <Route path="/dashboard" element={<Dashboard />}>
               <Route index element={<VistaInicio />} />

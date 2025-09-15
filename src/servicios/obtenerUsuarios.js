@@ -13,7 +13,7 @@ const obtenerUsuarios = () => {
 
       try {
         // ✅ Haz la llamada con axios, pasando el token en el encabezado
-        const respuesta = await axios.get('http://192.168.146.180:4000/mostrarUsuarios/usuariosBiblioteca', {
+        const respuesta = await axios.get('https://biblioteca-backend-cf59.onrender.com/mostrarUsuarios/usuariosBiblioteca', {
           headers: {
             'auth-token': token,
           },

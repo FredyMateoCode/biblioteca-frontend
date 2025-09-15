@@ -1,10 +1,15 @@
-import React, { useState, useEffect  } from 'react';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+//Importaciones de React y librerias externas
+import React, { useState, useEffect  } from 'react'; // 'useState' para gestionar estados, 'useEffect' para efectos secundarios.
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'; // 'Outlet' para renderizar rutas anidadas, 'useLocation' para obtener la URL, 'useNavigate' para la navegación.
+import { jwtDecode } from 'jwt-decode'; // Para decodificar el token JWT y obtener la información del usuario.
+
+// Importaciones de componentes y estilos de Material-UI
 import {
   Box, CssBaseline, AppBar, Toolbar, Typography, IconButton, Drawer, List, ListItem,
   ListItemIcon, ListItemText, Collapse, Avatar, Menu, MenuItem, Tooltip, Badge
 } from '@mui/material';
+
+// Importaciones de íconos de Material-UI
 import {
   Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, Dashboard as DashboardIcon,
   AutoStories as AutoStoriesIcon, WorkOutline as WorkOutlineIcon, School as SchoolIcon,
@@ -12,60 +17,65 @@ import {
   BookOnline as BookOnlineIcon, BarChart as BarChartIcon, ExpandLess, ExpandMore, Rule as RuleIcon,
   Mail as MailIcon, Notifications as NotificationsIcon, ArrowDropDown as ArrowDropDownIcon
 } from '@mui/icons-material';
+
+//Importaciones de activos locales
 import imagen001 from '../../assets/imagenes/Logo.png';
 import Footer from '../../componentes/Footers/Footer';
 
 export default function Dashboard() {
+  //Estados (hooks)
   const [open, setOpen] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const location = useLocation();
-  const navigate = useNavigate(); // El hook ya está aquí
+  const navigate = useNavigate();
 
-  //Para mostrar el nombre del usuario en la barra
-  const [nombreUsuario, setNombreUsuario] = useState('');
-  const primeraLetra = nombreUsuario ? nombreUsuario.charAt(0) : '';
+  //Estado para obtener el nombre del usuario
+  const [nombreUsuario, setNombreUsuario] = useState(''); // Estado que guarda el nombre del usuario.
+  const primeraLetra = nombreUsuario ? nombreUsuario.charAt(0) : ''; // Obtiene la primera letra del nombre para el Avatar.
+  
+  //Efecto de lado (se ejecuta al montar el componente)
   useEffect(() => {
-  const token = localStorage.getItem('auth-token');
+  const token = localStorage.getItem('auth-token'); // Obtiene el token de autenticación.
   
   if (token) {
       try {
-        // Decodifica el token para obtener la información.
-        const usuarioDecodificado = jwtDecode(token);
-        // Actualiza el estado con el nombre del usuario.
-        setNombreUsuario(usuarioDecodificado.usuario); // ✅ Revisa tu payload para saber el nombre exacto de la propiedad (ej. 'nombre', 'usuario', etc.). En tu caso era 'usuario'.
+        const usuarioDecodificado = jwtDecode(token); // Decodifica el token para obtener el payload.
+        setNombreUsuario(usuarioDecodificado.usuario);// Revisa tu payload para saber el nombre exacto de la propiedad (ej. 'nombre', 'usuario', etc.). En tu caso era 'usuario'.
       } catch (error) {
         console.error('Error al decodificar el token:', error);
       }
     }
-  }, []);
+  }, []);// El arreglo vacío `[]` indica que este efecto se ejecuta una sola vez al cargar el componente.
 
-  const drawerWidth = 200;
-  const collapsedWidth = 60;
+  // Constantes de diseño:
+  const drawerWidth = 200;// Ancho del Drawer cuando está abierto.
+  const collapsedWidth = 60;// Ancho del Drawer cuando está colapsado.
 
-  const openMenu = Boolean(anchorEl);
-  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget);
-  const handleMenuClose = () => setAnchorEl(null);
+  //Manejo del menú de usuario
+  const openMenu = Boolean(anchorEl); // Convierte el estado a booleano para el prop 'open' del menú.
+  const handleMenuOpen = (event) => setAnchorEl(event.currentTarget); // Abre el menú anclándolo al elemento que disparó el evento.
+  const handleMenuClose = () => setAnchorEl(null); // Cierra el menú reseteando el estado.
 
-  // ✅ Obtén el rol del localStorage
+  //Obtiene el rol del usuario desde el almacenamiento local localStorage
   const userRol = localStorage.getItem('user-rol');
 
-  // ✅ Agrega este bloque de código
+   //Efecto para manejar el cierre de sesión si se elimina el token
   useEffect(() => {
-   const handleStorageChange = (e) => {
-    if (e.key === 'auth-token' && !e.newValue) {
-      navigate('/login', { replace: true });
+   const handleStorageChange = (e) => { 
+    if (e.key === 'auth-token' && !e.newValue) { // Si el token fue eliminado del localStorage.
+      navigate('/login', { replace: true }); // Redirige al usuario a la página de login.
     }
    };
-   window.addEventListener('storage', handleStorageChange);
+   window.addEventListener('storage', handleStorageChange);// Escucha los cambios en el localStorage.
    return () => {
-    window.removeEventListener('storage', handleStorageChange);
+    window.removeEventListener('storage', handleStorageChange); // Limpia el 'listener' al desmontar el componente.
    };
   }, [navigate]);
 
-  // Modifica la función handleLogout
+  //Función para cerrar sesión
   const handleLogout = () => {
-    // ✅ Elimina el token de autenticación del almacenamiento local
+    //Elimina el token de autenticación del almacenamiento local
         localStorage.removeItem('auth-token');
     //Cerrar el menú deplegable
     handleMenuClose();
@@ -73,21 +83,23 @@ export default function Dashboard() {
     navigate('/');
   };
 
-  const toggleDrawer = () => setOpen(!open);
-  const toggleSubmenu = () => setSubmenuOpen(!submenuOpen);
+  // ✅ Funciones para el Drawer y submenú
+  const toggleDrawer = () => setOpen(!open); // Cambia el estado del Drawer (abierto/cerrado).
+  const toggleSubmenu = () => setSubmenuOpen(!submenuOpen); // Cambia el estado del submenú (abierto/cerrado).
 
+  // ✅ Propiedades para los elementos de la lista de navegación
   const getListItemProps = (path) => {
-    const isSelected = location.pathname === `/dashboard${path}`;
-    const fullPath = `/dashboard${path}`;
+    const isSelected = location.pathname === `/dashboard${path}`; // Verifica si la ruta actual coincide.
+    const fullPath = `/dashboard${path}`; // Construye la ruta completa.
     const handleItemClick = (event) => {
-      event.preventDefault();
-      navigate(fullPath, { replace: true });
+      event.preventDefault(); // Previene la navegación por defecto del enlace.
+      navigate(fullPath, { replace: true }); // Navega a la ruta.
     };
     return {
-      component: 'a',
+      component: 'a', // Renderiza el elemento como una etiqueta `<a>`.
       href: fullPath,
       onClick: handleItemClick,
-      sx: {
+      sx: { // Estilos en línea con la propiedad `sx`.
         bgcolor: isSelected ? 'rgba(255, 0, 0, 0.45)' : 'inherit',
         '&:hover': {
           bgcolor: isSelected ? 'rgba(255, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.04)',
@@ -100,14 +112,16 @@ export default function Dashboard() {
 
   return (
     <>
-      <CssBaseline />
+      <CssBaseline /> {/* ✅ Resetea los estilos CSS del navegador. */}
       <Box sx={{display: 'flex', width: '100%', maxWidth: '100vw', overflowX: 'hidden'}}>
         <AppBar position="fixed" sx={{zIndex: (theme) => theme.zIndex.drawer + 1,
           background: 'linear-gradient(to right, #b71c1c, #880e4f)', width: '100%'}}>
+          {/* ✅ Barra de navegación superior */}
           <Toolbar sx={{
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             padding: { xs: 1, sm: '0 16px' }, width: '100%', maxWidth: '100%'
           }}>
+            {/* ... Icono de menú, logo, título ... */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flex: 1 }}>
               <IconButton color="inherit" edge="start" onClick={toggleDrawer}>
                 {open ? <ChevronLeftIcon /> : <MenuIcon />}
@@ -166,6 +180,7 @@ export default function Dashboard() {
             }
           }}
         >
+          {/* ✅ Menú lateral */}
           <Toolbar />
           <List sx={{ overflowX: 'hidden' }}>
             <ListItem {...getListItemProps('')}>
@@ -173,8 +188,6 @@ export default function Dashboard() {
               {open && <ListItemText primary="Inicios" sx={{ color: 'black' }}  />}
             </ListItem>
             
-            
-
             {/* ✅ La protección de la ruta de usuarios */}
             {userRol !== 'invitado' && (
               <ListItem {...getListItemProps('/libros')}>
@@ -235,9 +248,6 @@ export default function Dashboard() {
               </ListItem>
 
             )}
-
-            
-            
             
             <ListItem
               onClick={toggleSubmenu}
