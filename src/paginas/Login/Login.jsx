@@ -6,6 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import imagen001 from '../../assets/imagenes/Logo.png';
 
+import Swal from 'sweetalert2'; // ✅ Importa SweetAlert2
+
+// ✅ Define la URL de la API desde la variable de entorno
+const API_URL = import.meta.env.VITE_API_URL;
+
 export default function Login() {
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState('');
@@ -13,8 +18,19 @@ export default function Login() {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
+  // ✅ Validación para campos vacíos
+    if (!usuario || !password) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campos vacíos',
+        text: 'Por favor, ingrese su usuario y contraseña.',
+        confirmButtonText: 'Aceptar'
+      });
+      return; // Detiene la ejecución si hay campos vacíos
+    }
+    
   try {
-    const response = await axios.post('https://biblioteca-backend-cf59.onrender.com/autenticarUsuarios', {
+    const response = await axios.post(`${API_URL}/autenticarUsuarios`, {
       usuario,
       password,
     });
@@ -27,6 +43,15 @@ const handleSubmit = async (event) => {
     
     // 2. Muestra un mensaje de éxito en la consola para verificar
     console.log('Login exitoso:', response.data.message);
+
+     // ✅ Muestra una alerta de éxito
+      Swal.fire({
+        icon: 'success',
+        title: '¡Bienvenido!',
+        text: response.data.message || 'Bienvenido.',
+        showConfirmButton: true,
+       
+      }); 
     
     // Redirige al usuario a la página deseada
     navigate('/dashboard');
@@ -34,8 +59,22 @@ const handleSubmit = async (event) => {
   } catch (error) {
       if (error.response) {
       console.error('Error desde el backend:', error.response.data.message);
+      // ✅ Muestra una alerta de error del backend
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de autenticación',
+            text: error.response.data.message || 'Usuario o contraseña incorrectos.',
+            confirmButtonText: 'Aceptar'
+          });
     } else {
       console.error('Error de red o de solicitud:', error.message);
+      // ✅ Muestra una alerta de error de red
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de conexión',
+            text: 'Hubo un problema al conectar con el servidor. Por favor, intente de nuevo.',
+            confirmButtonText: 'Aceptar'
+          });
     }
   }
 };
