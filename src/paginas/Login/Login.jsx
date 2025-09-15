@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import './Login.css';
 import imagen001 from '../../assets/imagenes/Logo.png';
 
+import '../../estilos/sweetalert.css'; /* ✅ Importa el nuevo archivo CSS */
 import Swal from 'sweetalert2'; // ✅ Importa SweetAlert2
 
 // ✅ Define la URL de la API desde la variable de entorno
@@ -28,7 +29,7 @@ const handleSubmit = async (event) => {
       });
       return; // Detiene la ejecución si hay campos vacíos
     }
-    
+
   try {
     const response = await axios.post(`${API_URL}/autenticarUsuarios`, {
       usuario,
