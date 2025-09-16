@@ -218,7 +218,7 @@ export default function Dashboard() {
             {userRol !== 'invitado' && (
               <ListItem {...getListItemProps('/usuarios')}>
                 <ListItemIcon><GroupIcon /></ListItemIcon>
-                {open && <ListItemText primary="Usuarios" sx={{ color: 'black' }}  />}
+                {open && <ListItemText primary="Usuarios" sx={{ color: 'black' }}/>}
               </ListItem>
             )}
 
