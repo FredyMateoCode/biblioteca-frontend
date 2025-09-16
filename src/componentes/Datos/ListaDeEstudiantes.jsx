@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import obtenerLibros from '../../servicios/obtenerLibros.js';
+import obtenerEstudiantes from '../../servicios/obtenerEstudiantes.js';
 import {
   Table,
   TableBody,
@@ -19,8 +19,8 @@ import BotonEliminar from '../Reutilizables/BotonEliminar.jsx';
 import BotonVer from '../Reutilizables/BotonVer.jsx';
 import Swal from 'sweetalert2'; // ✅ Importa SweetAlert2
 
-function ListaDeLibros() {
-  const { libros, cargando, error } = obtenerLibros();
+function ListaDeEstudiantes() {
+  const { estudiantes, cargando, error } = obtenerEstudiantes();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -35,43 +35,43 @@ function ListaDeLibros() {
   };
 
   if (cargando) {
-    return <div>Cargando datos de libros...</div>;
+    return <div>Cargando datos de Estudiantes...</div>;
   }
 
   if (error) {
     return <Typography color="error">{error}</Typography>;
   }
 
-  const librosEnPagina = libros.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const estudiantesEnPagina = estudiantes.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   /*Lógica para editar registro*/
-  const handleEditarLibro = (id) => {
+  const handleEditarEstudiante = (id) => {
     // Muestra un SweetAlert en lugar del console.log
     Swal.fire({
       title: '¡Funcionalidad en construcción!',
-      text: `La edición para el libro con ID: ${id} aún no está disponible.`,
+      text: `La edición para el estudiante con ID: ${id} aún no está disponible.`,
       icon: 'info', // Puedes usar 'info', 'warning', 'error', 'success', etc.
       confirmButtonText: 'Entendido'
     });
   };
 
   /*Lógica para ver registro*/
-  const handleVerLibro = (id) => {
+  const handleVerEstudiante = (id) => {
     // Muestra un SweetAlert en lugar del console.log
     Swal.fire({
       title: '¡Funcionalidad en construcción!',
-      text: `La Visualización para el libro con ID: ${id} aún no está disponible.`,
+      text: `La Visualización para el Estudiante con ID: ${id} aún no está disponible.`,
       icon: 'success', // Puedes usar 'info', 'warning', 'error', 'success', etc.
       confirmButtonText: 'Entendido'
     });
   };
 
   /*Lógica para eliminar registro*/
-  const handleEliminarLibro = (id) => {
+  const handleEliminarEstudiante = (id) => {
     // Muestra un SweetAlert en lugar del console.log
     Swal.fire({
       title: '¡Funcionalidad en construcción!',
-      text: `La Eliminación para el libro con ID: ${id} aún no está disponible.`,
+      text: `La Eliminación para el Estudiante con ID: ${id} aún no está disponible.`,
       icon: 'warning', // Puedes usar 'info', 'warning', 'error', 'success', etc.
       confirmButtonText: 'Entendido'
     });
@@ -81,42 +81,46 @@ function ListaDeLibros() {
   return (
     <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
       <Typography variant="h6" component="h6" sx={{ p: 2 }}>
-        Libros Registrados
+        Pofesores Registrados
       </Typography>
       <Table size="small" aria-label="tabla de usuarios">
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell>TÍTULO</TableCell>
-            <TableCell>CANTIDAD</TableCell>
-            <TableCell>AUTOR</TableCell>
-            <TableCell>PAÍS</TableCell>
-            <TableCell>EDITORIAL</TableCell>
-            <TableCell>EDICIÓN</TableCell>
-            <TableCell>ESTADO</TableCell>
+            <TableCell>DNI</TableCell>
+            <TableCell>NOMBRES</TableCell>
+            <TableCell>APELLIDOS</TableCell>
+            <TableCell>INGRESO</TableCell>
+            <TableCell>GRADO INICIAL</TableCell>
+            <TableCell>SECCIÓN</TableCell>
+            <TableCell>CELULAR</TableCell>
+            <TableCell>NACIMIENTO</TableCell>
+            <TableCell>GÉNERO</TableCell>
             <TableCell>ACCIONES</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {librosEnPagina.map((libro) => (
+          {estudiantesEnPagina.map((estudiante) => (
             <TableRow
-              key={libro.id_libro}
+              key={estudiante.id_est}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell>{libro.id_libro}</TableCell>
-              <TableCell>{libro.titulo_libro}</TableCell>
-              <TableCell>{libro.cantidad_libro}</TableCell>
-              <TableCell>{libro.autor_libro}</TableCell>
-              <TableCell>{libro.pais_libro}</TableCell>
-              <TableCell>{libro.editorial_libro}</TableCell>
-              <TableCell>{libro.edicion_libro}</TableCell>
-              <TableCell>{libro.estado_libro}</TableCell>
+              <TableCell>{estudiante.id_est}</TableCell>
+              <TableCell>{estudiante.dni_est}</TableCell>
+              <TableCell>{estudiante.nombres_est}</TableCell>
+              <TableCell>{estudiante.apellidos_est}</TableCell>
+              <TableCell>{estudiante.ingreso_est}</TableCell>
+              <TableCell>{estudiante.grado_inicial_est}</TableCell>
+              <TableCell>{estudiante.seccion_est}</TableCell>
+              <TableCell>{estudiante.celular_est}</TableCell>
+              <TableCell>{estudiante.nacimiento_est}</TableCell>
+              <TableCell>{estudiante.genero_est}</TableCell>
               <TableCell>
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   {/* ✅ Usando el componente BotonEditar reutilizable */}
-                  <BotonEditar onClick={() => handleEditarLibro(libro.id_libro)} />
-                  <BotonVer onClick={() => handleVerLibro(libro.id_libro)} />
-                  <BotonEliminar onClick={() => handleEliminarLibro(libro.id_libro)} />
+                  <BotonEditar onClick={() => handleEditarEstudiante(estudiante.id_est)} />
+                  <BotonVer onClick={() => handleVerEstudiante(estudiante.id_est)} />
+                  <BotonEliminar onClick={() => handleEliminarEstudiante(estudiante.id_est)} />
                 </Box>
               </TableCell>
             </TableRow>
@@ -126,7 +130,7 @@ function ListaDeLibros() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={libros.length}
+        count={estudiantes.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -136,4 +140,4 @@ function ListaDeLibros() {
   );
 }
 
-export default ListaDeLibros;
+export default ListaDeEstudiantes;

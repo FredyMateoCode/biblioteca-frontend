@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import obtenerLibros from '../../servicios/obtenerLibros.js';
+import obtenerProfesores from '../../servicios/obtenerProfesores.js';
 import {
   Table,
   TableBody,
@@ -19,8 +19,8 @@ import BotonEliminar from '../Reutilizables/BotonEliminar.jsx';
 import BotonVer from '../Reutilizables/BotonVer.jsx';
 import Swal from 'sweetalert2'; // ✅ Importa SweetAlert2
 
-function ListaDeLibros() {
-  const { libros, cargando, error } = obtenerLibros();
+function ListaDeProfesores() {
+  const { profesores, cargando, error } = obtenerProfesores();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -35,43 +35,43 @@ function ListaDeLibros() {
   };
 
   if (cargando) {
-    return <div>Cargando datos de libros...</div>;
+    return <div>Cargando datos de profesores...</div>;
   }
 
   if (error) {
     return <Typography color="error">{error}</Typography>;
   }
 
-  const librosEnPagina = libros.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const profesoresEnPagina = profesores.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
   /*Lógica para editar registro*/
-  const handleEditarLibro = (id) => {
+  const handleEditarProfesor = (id) => {
     // Muestra un SweetAlert en lugar del console.log
     Swal.fire({
       title: '¡Funcionalidad en construcción!',
-      text: `La edición para el libro con ID: ${id} aún no está disponible.`,
+      text: `La edición para el Maestro con ID: ${id} aún no está disponible.`,
       icon: 'info', // Puedes usar 'info', 'warning', 'error', 'success', etc.
       confirmButtonText: 'Entendido'
     });
   };
 
   /*Lógica para ver registro*/
-  const handleVerLibro = (id) => {
+  const handleVerProfesor = (id) => {
     // Muestra un SweetAlert en lugar del console.log
     Swal.fire({
       title: '¡Funcionalidad en construcción!',
-      text: `La Visualización para el libro con ID: ${id} aún no está disponible.`,
+      text: `La Visualización para el Maestro con ID: ${id} aún no está disponible.`,
       icon: 'success', // Puedes usar 'info', 'warning', 'error', 'success', etc.
       confirmButtonText: 'Entendido'
     });
   };
 
   /*Lógica para eliminar registro*/
-  const handleEliminarLibro = (id) => {
+  const handleEliminarProfesor = (id) => {
     // Muestra un SweetAlert en lugar del console.log
     Swal.fire({
       title: '¡Funcionalidad en construcción!',
-      text: `La Eliminación para el libro con ID: ${id} aún no está disponible.`,
+      text: `La Eliminación para el Maestro con ID: ${id} aún no está disponible.`,
       icon: 'warning', // Puedes usar 'info', 'warning', 'error', 'success', etc.
       confirmButtonText: 'Entendido'
     });
@@ -81,42 +81,40 @@ function ListaDeLibros() {
   return (
     <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
       <Typography variant="h6" component="h6" sx={{ p: 2 }}>
-        Libros Registrados
+        Pofesores Registrados
       </Typography>
       <Table size="small" aria-label="tabla de usuarios">
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell>TÍTULO</TableCell>
-            <TableCell>CANTIDAD</TableCell>
-            <TableCell>AUTOR</TableCell>
-            <TableCell>PAÍS</TableCell>
-            <TableCell>EDITORIAL</TableCell>
-            <TableCell>EDICIÓN</TableCell>
-            <TableCell>ESTADO</TableCell>
+            <TableCell>DNI</TableCell>
+            <TableCell>NOMBRES</TableCell>
+            <TableCell>APELLIDOS</TableCell>
+            <TableCell>CURSO</TableCell>
+            <TableCell>CELULAR</TableCell>
+            <TableCell>FECHA</TableCell>
             <TableCell>ACCIONES</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {librosEnPagina.map((libro) => (
+          {profesoresEnPagina.map((profesor) => (
             <TableRow
-              key={libro.id_libro}
+              key={profesor.id_prof}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
-              <TableCell>{libro.id_libro}</TableCell>
-              <TableCell>{libro.titulo_libro}</TableCell>
-              <TableCell>{libro.cantidad_libro}</TableCell>
-              <TableCell>{libro.autor_libro}</TableCell>
-              <TableCell>{libro.pais_libro}</TableCell>
-              <TableCell>{libro.editorial_libro}</TableCell>
-              <TableCell>{libro.edicion_libro}</TableCell>
-              <TableCell>{libro.estado_libro}</TableCell>
+              <TableCell>{profesor.id_prof}</TableCell>
+              <TableCell>{profesor.dni_prof}</TableCell>
+              <TableCell>{profesor.nombres_prof}</TableCell>
+              <TableCell>{profesor.apellidos_prof}</TableCell>
+              <TableCell>{profesor.curso_prof}</TableCell>
+              <TableCell>{profesor.celular_prof}</TableCell>
+              <TableCell>{profesor.fecha}</TableCell>
               <TableCell>
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   {/* ✅ Usando el componente BotonEditar reutilizable */}
-                  <BotonEditar onClick={() => handleEditarLibro(libro.id_libro)} />
-                  <BotonVer onClick={() => handleVerLibro(libro.id_libro)} />
-                  <BotonEliminar onClick={() => handleEliminarLibro(libro.id_libro)} />
+                  <BotonEditar onClick={() => handleEditarProfesor(profesor.id_prof)} />
+                  <BotonVer onClick={() => handleVerProfesor(profesor.id_prof)} />
+                  <BotonEliminar onClick={() => handleEliminarProfesor(profesor.id_prof)} />
                 </Box>
               </TableCell>
             </TableRow>
@@ -126,7 +124,7 @@ function ListaDeLibros() {
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
-        count={libros.length}
+        count={profesores.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
@@ -136,4 +134,4 @@ function ListaDeLibros() {
   );
 }
 
-export default ListaDeLibros;
+export default ListaDeProfesores;
